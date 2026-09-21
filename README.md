@@ -125,6 +125,45 @@ False positive check:
 
 One limitation is that the detection logic is threshold-based and uses only a few metrics and a single log-level check. It may miss nuanced problems that are not extreme enough to exceed the thresholds, or it may overreact if normal traffic patterns vary by time of day. A useful improvement would be to add baseline-aware thresholds (for example, a rolling mean or percentile-based alerting) so the detector can identify deviations relative to expected service behavior rather than fixed absolute numbers alone.
 
+## Task 4: Verify the AIOps event flow
+
+The repository contains a simple event-streaming simulation made up of the following components:
+
+- `Producer`: creates and emits anomaly events after detection.
+- `Topic`: stores messages in an in-memory stream for downstream consumers.
+- `Consumer`: reads events from the topic.
+- `Event/message`: the payload that carries the anomaly context.
+
+The workflow is:
+
+1. A record is analyzed by the anomaly detector.
+2. If the record is anomalous, an `ANOMALY` event is created.
+3. The producer publishes that event to the topic.
+4. The consumer reads the messages from the same topic.
+5. The consumed event is processed and passed downstream as part of the AIOps workflow.
+
+Execution result from the project’s pipeline:
+
+```text
+AIOps Pipeline Result
+Records processed: 10
+Anomalies detected: 2
+Events consumed: 2
+
+Detected Events:
+Service: payment-service
+Timestamp: 2026-09-20T10:05:00
+Type: ANOMALY
+Reasons: High response time, Error log detected
+
+Service: payment-service
+Timestamp: 2026-09-20T10:06:00
+Type: ANOMALY
+Reasons: High response time, High CPU utilization, High memory utilization, Error log detected
+```
+
+This confirms that the anomaly was identified, converted into an event, published to the topic, received by the consumer, and moved through the downstream event-processing path as expected.
+
 ---
 
 &copy; 2025 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
