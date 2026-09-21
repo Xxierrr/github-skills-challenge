@@ -11,6 +11,18 @@ Make sure your work is committed and pushed to your repository before submission
 
 Good luck!
 
+## Service overview
+
+This assessment monitors a payment processing service, `payment-service`, which handles incoming customer requests and records operational telemetry such as latency, CPU usage, memory usage, and log events. The service is expected to operate normally under steady load, processing requests successfully and emitting informational log entries.
+
+## Operational problem being addressed
+
+The goal is to detect when the service begins to behave abnormally under stress or failure states. In this dataset, the operational issue is a degradation and outage pattern: response times spike, resource usage rises, and timeout-related error logs appear. These symptoms indicate that the service is not operating normally and needs investigation.
+
+## Purpose of AIOps in this assessment
+
+AIOps in this assessment is used to combine telemetry metrics and log evidence into a readable detection workflow. Instead of inspecting raw data manually, the anomaly-detection pipeline looks for unusual metric patterns and relevant error signals, then reports which observations were flagged and why. This helps distinguish healthy behaviour from abnormal events and makes the operational problem easier to understand and act on.
+
 ## Operational data analysis
 
 The repository contains a small synthetic service log dataset in [data/service_data.json](data/service_data.json). Based on the records in that file:
